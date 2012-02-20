@@ -9,20 +9,12 @@ function Game() {
   this.ships = new Array();
   this.bullets = new Array();
   this.powerups = new Array();
-  this.explosions = new Array();
+  this.newExplosions = new Array();
+  this.exploCount = 0;
 }
 
 Game.prototype = {
   update: function(timeElapsed) {
-
-    // update all explosions
-    for(var expoIndex in this.explosions) {
-	var expo = this.explosions[expoIndex];
-	expo.radius -= 2;
-      if(expo.radius <= 0) {
-	  this.removeExplosion(expo);
-      }
-    }
 
     // update all ships
     for(var shipIndex in this.ships) {
@@ -61,9 +53,8 @@ Game.prototype = {
                     this.addPowerup(new Powerup(ship.position, "hp"));
                 }
               }
-              this.explosions.push({ radius:20, position: bullet.position });
+              this.newExplosions.push({ id: (this.exploCount++)%(1<<32), radius:20, position: bullet.position });
               isHit = true;
-	      this.explosions.push({ radius:20, position: bullet.position });
             }
           }
         }

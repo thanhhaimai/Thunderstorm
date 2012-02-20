@@ -10,7 +10,6 @@ module.exports = function(app) {
 
     var everyone = nowjs.initialize(app);
     var clients = [];
-    //var clients_guns = {};
 
   everyone.now.moveUpRight = function(id) {
     clients[id].setNewOrientation([1, -1]);
@@ -39,7 +38,6 @@ module.exports = function(app) {
     clients[id].setNewOrientation([1, 0]);
   };
   everyone.now.fire = function(id, orientation) {
-      //console.log('shoot! with ' + orientation);
       game.fire(clients[id], orientation);
       clients[id].fireOrientation = orientation;
   }
@@ -54,10 +52,10 @@ module.exports = function(app) {
   var onFrameUpdate = function(timeElapsed) {
   };
   var onStepUpdate = function(timeElapsed) {
-    //console.log(count++, timeElapsed);
     game.update(timeElapsed);
     if(started) {
-      everyone.now.OnRender(compactShips(game.ships), game.bullets, game.explosions, game.powerups);
+      everyone.now.OnRender(compactShips(game.ships), game.bullets, game.newExplosions, game.powerups);
+      game.newExplosions = [];
     }
   };
   var onRender = function() {

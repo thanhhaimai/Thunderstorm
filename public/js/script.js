@@ -12,8 +12,8 @@ var bg_color = '#0099cc';
 var interp = null;
 var ininterp = null;
 var isDead = false;
-
 var count = 0;
+var explosions = {};
 
 var speedShifts = [
     [0, 0, 0, 1, 1],
@@ -210,7 +210,7 @@ function drawBG() {
 }
 
 function drawPowerup(powerup) {
-    console.log(powerup.type);
+    //console.log(powerup.type);
     if (powerup.type == "speed") {
         var oldWidth = ctx.lineWidth;
         ctx.lineWidth = 3;
@@ -288,6 +288,10 @@ function drawBullet(bullet) {
 
 
 function drawExplosion(explosion){
+    if( explosion.radius <= 2 ){
+	return delete explosions[explosion.id];
+    }
+
     ctx.fillStyle = '#FF6600';
     ctx.beginPath();
     ctx.arc(explosion.position[0], explosion.position[1], explosion.radius, 0, Math.PI * 2, true);
@@ -299,6 +303,7 @@ function drawExplosion(explosion){
     ctx.arc(explosion.position[0], explosion.position[1], explosion.radius - 3, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.fill();
+    explosion.radius--;
 }
 
 now.OnConnect = function(id) {
@@ -321,7 +326,7 @@ drawText = function(str) {
 var TIMES = 25;
 var TIME = 40;
 
-now.OnRender = function(ships, bullets, explosions, powerups) {
+now.OnRender = function(ships, bullets, newExplosions, powerups) {
 
     ++count;
     drawBG();
@@ -352,6 +357,10 @@ now.OnRender = function(ships, bullets, explosions, powerups) {
         drawGun(ship.position[0], ship.position[1], ship.fireOrientation, ship.radius * 2, ship.bulletRadius * 2);
     }
 
+    for(var index in newExplosions){
+	var newExplosion = newExplosions[index];
+	explosions[newExplosion.id] = newExplosion;
+    }
 
     for(var exploIndex in explosions) {
         drawExplosion(explosions[exploIndex]);
