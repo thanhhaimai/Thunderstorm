@@ -8,8 +8,8 @@ var started = false;
 module.exports = function(app) {
   var game = new Game();
 
-    var everyone = nowjs.initialize(app);
-    var clients = [];
+  var everyone = nowjs.initialize(app);
+  var clients = [];
 
   everyone.now.moveUpRight = function(id) {
     clients[id].setNewOrientation([1, -1]);
@@ -41,7 +41,11 @@ module.exports = function(app) {
       game.fire(clients[id], orientation);
       clients[id].fireOrientation = orientation;
   }
-   everyone.now.nameIs = function(id, name){
+  everyone.now.nameIs = function(id, name){
+       started = true;
+       var ship = new Ship([WIDTH * Math.random(), HEIGHT * Math.random()], this.user.clientId, this.user.clientId);
+       game.addShip(ship);
+       clients[this.user.clientId] = ship;
        clients[id].name = name;
   }
   everyone.now.sendChat = function(msg) {
@@ -95,10 +99,6 @@ module.exports = function(app) {
     return bulletlocs;
   }
   nowjs.on('connect', function() {
-    started = true;
-    var ship = new Ship([WIDTH * Math.random(), HEIGHT * Math.random()], this.user.clientId, this.user.clientId);
-    game.addShip(ship);
-    clients[this.user.clientId] = ship;
     this.now.OnConnect(this.user.clientId);
   });
 

@@ -308,7 +308,6 @@ function drawExplosion(explosion){
 
 now.OnConnect = function(id) {
     shipId = id;
-
     now.nameIs(id, prompt("Who are you?"));
 };
 
@@ -343,6 +342,8 @@ now.OnRender = function(ships, bullets, newExplosions, powerups) {
     if (!found) {
         drawText("You are dead! Refresh the page to revenge!");
         return;
+    } else if (ships.length == 1){
+	drawText("You're the only one here, Share the link to play with others!");
     }
 
     drawMyGun();
