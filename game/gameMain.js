@@ -47,6 +47,7 @@ module.exports = function(app) {
        game.addShip(ship);
        clients[this.user.clientId] = ship;
        clients[id].name = name;
+       console.log("-",  new Date(), "(0 ms): User ", name, "has joined the game");
   }
   everyone.now.sendChat = function(msg) {
     everyone.now.receiveChat(msg);
@@ -74,7 +75,7 @@ module.exports = function(app) {
               damaged = ships[i].damagedTurns % 2;
           }
           locs.push({
-	      name : clients[ships[i].id].name,
+	      name            : clients[ships[i].id].name,
               position        : ships[i].position,
               radius          : ships[i].radius,
               id              : ships[i].id,
